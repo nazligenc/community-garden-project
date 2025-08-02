@@ -1,6 +1,7 @@
 "use client";
 
 import { Box, Container, Flex, Link } from "@chakra-ui/react";
+import { GARDEN_THEME } from "@/constants/campaign";
 import { isDevnetEnvironment } from "@/lib/contract-utils";
 import { useDevnetWallet } from "@/lib/devnet-wallet-context";
 import { DevnetWalletButton } from "./DevnetWalletButton";
@@ -15,10 +16,10 @@ export const Navbar = () => {
         <Flex justify="space-between" h={16} align="center">
           <Flex align="center">
             <Flex
-              bg="white"
+              bg={GARDEN_THEME.primary}
               borderRadius="md"
               border="2px"
-              borderColor="gray.700"
+              borderColor={GARDEN_THEME.primary}
               letterSpacing="-.05em"
               fontSize="xl"
               fontWeight="bold"
@@ -26,14 +27,14 @@ export const Navbar = () => {
               h="52px"
               justify="center"
               align="center"
-              color="gray.900"
+              color="white"
               shrink="0"
             >
-              /-/
+              🌱
             </Flex>
             <Link href="/" textDecoration="none">
-              <Box fontSize="lg" fontWeight="bold" color="gray.900" ml={4}>
-                Fundraising
+              <Box fontSize="lg" fontWeight="bold" color={GARDEN_THEME.primary} ml={4}>
+                GreenGrow Community Garden
               </Box>
             </Link>
           </Flex>

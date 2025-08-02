@@ -1,4 +1,5 @@
 import { useExistingDonation } from "@/hooks/campaignQueries";
+import { GARDEN_THEME } from "@/constants/campaign";
 import {
   Alert,
   AlertDescription,
@@ -62,8 +63,8 @@ export default function DonationModal({
   const currentWalletAddress = isDevnetEnvironment()
     ? devnetWallet?.stxAddress
     : isTestnetEnvironment()
-    ? testnetAddress
-    : mainnetAddress;
+      ? testnetAddress
+      : mainnetAddress;
 
   const { data: previousDonation } = useExistingDonation(currentWalletAddress);
   const { data: prices } = useCurrentPrices();
@@ -79,6 +80,14 @@ export default function DonationModal({
   const toast = useToast();
 
   const presetAmounts = [10, 25, 50, 100];
+
+  const gardenMessages = [
+    "🌱 Your contribution helps our community grow!",
+    "🥕 Fresh food for everyone in our neighborhood!",
+    "🌿 Building a sustainable future together!",
+    "💚 Growing healthier communities, one seed at a time!",
+    "👥 Join our garden community today!"
+  ];
 
   const handlePresetClick = (amount: number) => {
     setSelectedAmount(amount);
@@ -111,23 +120,25 @@ export default function DonationModal({
       const txOptions =
         paymentMethod === "sbtc"
           ? getContributeSbtcTx(getStacksNetworkString(), {
-              address: currentWalletAddress || "",
-              amount: Math.round(
-                btcToSats(usdToSbtc(amount, prices?.sbtc || 0))
-              ),
-            })
+            address: currentWalletAddress || "",
+            amount: Math.round(
+              btcToSats(usdToSbtc(amount, prices?.sbtc || 0))
+            ),
+          })
           : getContributeStxTx(getStacksNetworkString(), {
-              address: currentWalletAddress || "",
-              amount: Math.round(
-                Number(stxToUstx(usdToStx(amount, prices?.stx || 0)))
-              ),
-            });
+            address: currentWalletAddress || "",
+            amount: Math.round(
+              Number(stxToUstx(usdToStx(amount, prices?.stx || 0)))
+            ),
+          });
 
       const doSuccessToast = (txid: string) => {
+        const randomMessage = gardenMessages[Math.floor(Math.random() * gardenMessages.length)];
         toast({
-          title: "Thank you!",
+          title: "🌱 Thank you for your contribution!",
           description: (
             <Flex direction="column" gap="4">
+              <Box>{randomMessage}</Box>
               <Box>Processing donation of ${amount}.</Box>
               <Box fontSize="xs">
                 Transaction ID: <strong>{txid}</strong>
@@ -179,7 +190,7 @@ export default function DonationModal({
     <Modal isOpen={isOpen} onClose={onClose} size="full">
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Make a Contribution</ModalHeader>
+        <ModalHeader color={GARDEN_THEME.primary}>🌱 Contribute to Our Community Garden</ModalHeader>
         <ModalCloseButton />
         <ModalBody pb="8">
           <Flex direction="column" gap="3">
@@ -299,13 +310,13 @@ export default function DonationModal({
                         (≈
                         {paymentMethod === "stx"
                           ? `${usdToStx(
-                              Number(selectedAmount || customAmount || "0"),
-                              prices?.stx || 0
-                            ).toFixed(2)} STX`
+                            Number(selectedAmount || customAmount || "0"),
+                            prices?.stx || 0
+                          ).toFixed(2)} STX`
                           : `${usdToSbtc(
-                              Number(selectedAmount || customAmount || "0"),
-                              prices?.sbtc || 0
-                            ).toFixed(8)} sBTC`}
+                            Number(selectedAmount || customAmount || "0"),
+                            prices?.sbtc || 0
+                          ).toFixed(8)} sBTC`}
                         )
                       </Box>
                     </Flex>

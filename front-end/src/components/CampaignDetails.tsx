@@ -23,7 +23,7 @@ import {
 } from "@chakra-ui/react";
 import { ChevronLeftIcon, ChevronRightIcon, InfoIcon } from "@chakra-ui/icons";
 import { useContext, useEffect, useState } from "react";
-import { CAMPAIGN_SUBTITLE, CAMPAIGN_TITLE } from "@/constants/campaign";
+import { CAMPAIGN_SUBTITLE, CAMPAIGN_TITLE, GARDEN_THEME } from "@/constants/campaign";
 import StyledMarkdown from "./StyledMarkdown";
 import { useCampaignInfo, useExistingDonation } from "@/hooks/campaignQueries";
 import { useCurrentBtcBlock } from "@/hooks/chainQueries";
@@ -54,8 +54,8 @@ export default function CampaignDetails({
   const currentWalletAddress = isDevnetEnvironment()
     ? devnetWallet?.stxAddress
     : isTestnetEnvironment()
-    ? testnetAddress
-    : mainnetAddress;
+      ? testnetAddress
+      : mainnetAddress;
 
   const [isDonationModalOpen, setIsDonationModalOpen] = useState(false);
 
@@ -122,8 +122,8 @@ export default function CampaignDetails({
     <Container maxW="container.xl" py="8">
       <Flex direction="column" gap="6">
         <Flex direction="column" gap="1">
-          <Heading>{CAMPAIGN_TITLE}</Heading>
-          <Text>{CAMPAIGN_SUBTITLE}</Text>
+          <Heading color={GARDEN_THEME.primary}>{CAMPAIGN_TITLE}</Heading>
+          <Text color="gray.600" fontSize="lg">{CAMPAIGN_SUBTITLE}</Text>
         </Flex>
 
         <SimpleGrid columns={{ base: 1, lg: 2 }} spacing={8} alignItems="start">
@@ -178,7 +178,7 @@ export default function CampaignDetails({
           {/* Right column: Campaign stats & donation */}
           <Box>
             {campaignInfo &&
-            currentWalletAddress === FUNDRAISING_CONTRACT.address ? (
+              currentWalletAddress === FUNDRAISING_CONTRACT.address ? (
               <CampaignAdminControls
                 campaignIsUninitialized={campaignIsUninitialized}
                 campaignIsExpired={!!campaignIsExpired}
@@ -269,7 +269,16 @@ export default function CampaignDetails({
                       size="lg"
                       colorScheme="green"
                       borderRadius="full"
+                      bg="gray.100"
+                      sx={{
+                        '& > div': {
+                          background: `linear-gradient(90deg, ${GARDEN_THEME.primary} 0%, ${GARDEN_THEME.success} 100%)`
+                        }
+                      }}
                     />
+                    <Text fontSize="sm" color="gray.600" mt={2} textAlign="center">
+                      🌱 Growing our community garden together!
+                    </Text>
                   </Box>
 
                   {campaignIsExpired || campaignIsCancelled ? (
@@ -323,22 +332,20 @@ export default function CampaignDetails({
                         size="lg"
                         colorScheme="green"
                         width="full"
+                        bg={GARDEN_THEME.primary}
+                        _hover={{ bg: GARDEN_THEME.success }}
                         onClick={() => {
                           setIsDonationModalOpen(true);
                         }}
                       >
-                        Contribute Now
+                        🌱 Contribute to Our Garden
                       </Button>
-                      <Box fontSize="xs">
+                      <Box fontSize="xs" bg="gray.50" p={3} borderRadius="md">
                         <Box mb="2">
-                          <strong>Flexible funding</strong>: Creator keeps
-                          whatever money they raise, even if they don&apos;t hit
-                          their target. No refunds to backers if the campaign
-                          falls short.
+                          <strong>🌿 Community Garden Funding</strong>: Your contributions help us build a sustainable community garden that will provide fresh, healthy food for our neighborhood. Every dollar goes directly toward garden infrastructure, tools, and educational programs.
                         </Box>
                         <Box>
-                          The creator can always choose to cancel this
-                          fundraiser and provide refunds.
+                          💚 Together, we can grow a healthier, more connected community!
                         </Box>
                       </Box>
                     </Flex>
