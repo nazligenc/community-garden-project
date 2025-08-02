@@ -47,8 +47,8 @@ export default function CampaignAdminControls({
   const currentWalletAddress = isDevnetEnvironment()
     ? devnetWallet?.stxAddress
     : isTestnetEnvironment()
-    ? testnetAddress
-    : mainnetAddress;
+      ? testnetAddress
+      : mainnetAddress;
 
   const [isInitializingCampaign, setIsInitializingCampaign] = useState(false);
   const [isCancelConfirmationModalOpen, setIsCancelConfirmationModalOpen] =
